@@ -2,8 +2,10 @@ from .citizenship_evaluator import CitizenshipEvaluator
 from .tp_age_evaluator import age_evaluator
 from .literacy_evaluator import LiteracyEvaluator
 
+
 class EligibilityError(Exception):
     pass
+
 
 class Eligibility:
     '''Eligible if all criteria evaluate to True'''
@@ -37,14 +39,16 @@ class Eligibility:
                 k: v for k, v in self.criteria.items() if not v}
 
             if not self.age_evaluator.eligible(age):
-                self.reasons_ineligible.update(age=self.age_evaluator.reasons_ineligible)
+                self.reasons_ineligible.update(
+                    age=self.age_evaluator.reasons_ineligible)
 
             if not self.citizenship_evaluator.eligible:
                 self.reasons_ineligible.update(
                     citizenship=self.citizenship_evaluator.reasons_ineligible)
 
             if not self.literacy_evaluator.eligible:
-                self.reasons_ineligible.update(literacy=self.literacy_evaluator.reasons_ineligible)
+                self.reasons_ineligible.update(
+                    literacy=self.literacy_evaluator.reasons_ineligible)
 
     def __str__(self):
         return self.eligible

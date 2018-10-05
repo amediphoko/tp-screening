@@ -1,5 +1,6 @@
 from edc_constants.constants import (YES, NO)
 
+
 class LiteracyEvaluator:
     '''eligible evlautes to True if the subject is literate or has
     a literate witness available'''

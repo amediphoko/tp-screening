@@ -1,8 +1,3 @@
-'''
-Created on 26 Sep 2018
-
-@author: adiphoko
-'''
 from edc_identifier.simple_identifier import SimpleUniqueIdentifier
 
 
