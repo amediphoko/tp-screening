@@ -1,7 +1,8 @@
 from ..eligibility import Eligibility
 from edc_constants.constants import (YES, NO)
+from django.test import TestCase
 
-class TestEligibilty:
+class TestEligibilty(TestCase):
     
     def setUp(self):   
         self.eligibility_criteria = {
@@ -30,7 +31,7 @@ class TestEligibilty:
         criteria.update({'age' : 15})
         eligibility_obj = Eligibility(**criteria)
         self.assertIn('under 18 years old',
-                      eligibility_obj.reasons_ineligible)
+                      eligibility_obj.reasons_ineligible.get('age'))
     
     def test_participant_eligible_if_citizen(self):
         criteria = self.eligibility_criteria.copy()
@@ -59,7 +60,7 @@ class TestEligibilty:
                          'has_proof': False})
         eligibility_obj = Eligibility(**criteria)
         self.assertIn('Not a citizen of Botswana',
-                      eligibility_obj.reasons_ineligible)
+                      eligibility_obj.reasons_ineligible.values())
 
     def test_citizen_by_marriage_not_proof_reason(self):
         criteria = self.eligibility_criteria.copy()
@@ -68,7 +69,7 @@ class TestEligibilty:
         eligibility_obj = Eligibility(**criteria)
         self.assertFalse(eligibility_obj.eligible)
         self.assertIn('Proof of marriage not provided',
-                      eligibility_obj.reasons_ineligible)
+                      eligibility_obj.reasons_ineligible.values())
         
     def test_participant_literacy(self):
         criteria = self.eligibility_criteria.copy()
