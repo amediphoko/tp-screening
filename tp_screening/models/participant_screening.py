@@ -9,7 +9,7 @@ from edc_base.sites.site_model_mixin import SiteModelMixin
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 
 
-class ParticipantScreening(models.Model, SiteModelMixin, BaseUuidModel):
+class ParticipantScreening(SiteModelMixin, BaseUuidModel):
 
     eligibility_cls = TpScreeningEligibility
 
