@@ -5,6 +5,7 @@ from uuid import uuid4
 from ..identifiers import ScreeningIdentifier
 from ..tp_screening_eligibility import TpScreeningEligibility
 from edc_constants.choices import (GENDER, YES_NO, YES_NO_NA_DWTA)
+from edc_constants.constants import NO
 from edc_base.sites.site_model_mixin import SiteModelMixin
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 
@@ -34,11 +35,12 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
     '''Subject Eligibility Questionnaire'''
     age_in_years = models.IntegerField(
         verbose_name="Age in years.")
-    
+
     guardian = models.CharField(
         verbose_name='Does subject have a guardian available?, If minor',
         max_length=3,
-        choices=YES_NO,)
+        choices=YES_NO,
+        default=NO)
 
     gender = models.CharField(
         max_length=1,

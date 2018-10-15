@@ -15,7 +15,7 @@ class Eligibility:
     literacy_evaluator_cls = LiteracyEvaluator
 
     def __init__(self, age=None, with_guardian=None, citizenship=None,
-                 legally_married=None, has_proof=None, literacy=None, 
+                 legally_married=None, has_proof=None, literacy=None,
                  has_witness=None):
 
         self.criteria = {}
