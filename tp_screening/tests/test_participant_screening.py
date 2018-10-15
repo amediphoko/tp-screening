@@ -26,8 +26,8 @@ class TestParticipantScreening(TestCase):
         participant_screening = mommy.make_recipe(
             'tp_screening.participantscreening', age_in_years=15)
         self.assertFalse(participant_screening.eligible)
-        self.assertIn(participant_screening.reasons_ineligible,
-                      'under 18 years old')
+        self.assertIn('under 18 years old',
+                      participant_screening.reasons_ineligible)
 
     def test_participant_age_lower_bound_inclusion(self):
         participant_screening = mommy.make_recipe(

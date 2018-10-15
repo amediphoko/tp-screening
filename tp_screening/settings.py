@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_nose',
     'edc_identifier.apps.AppConfig',
     'edc_device.apps.AppConfig',
     'tp_screening.apps.AppConfig',
@@ -115,6 +116,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the tp_screening app
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=tp_screening',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

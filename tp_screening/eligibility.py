@@ -14,8 +14,9 @@ class Eligibility:
     citizenship_evaluator_cls = CitizenshipEvaluator
     literacy_evaluator_cls = LiteracyEvaluator
 
-    def __init__(self, age=None, citizenship=None, legally_married=None,
-                 has_proof=None, literacy=None, has_witness=None):
+    def __init__(self, age=None, with_guardian=None, citizenship=None,
+                 legally_married=None, has_proof=None, literacy=None, 
+                 has_witness=None):
 
         self.criteria = {}
 
@@ -26,7 +27,8 @@ class Eligibility:
         self.literacy_evaluator = self.literacy_evaluator_cls(
             literacy=literacy, has_witness=has_witness)
 
-        self.criteria.update(age=self.age_evaluator.eligible(age))
+        self.criteria.update(age=self.age_evaluator.eligible(
+            age=age, with_guardian=with_guardian))
         self.criteria.update(citizenship=self.citizenship_evaluator.eligible)
         self.criteria.update(literacy=self.literacy_evaluator.eligible)
 

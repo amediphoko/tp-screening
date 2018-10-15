@@ -18,6 +18,7 @@ class TpScreeningEligibility:
 
         eligibility_obj = self.eligibility_cls(
             age=model_obj.age_in_years,
+            with_guardian=if_yes(model_obj.guardian),
             citizenship=model_obj.citizenship,
             legally_married=if_yes(model_obj.married_to_citizen),
             has_proof=if_yes(model_obj.marriage_proof),

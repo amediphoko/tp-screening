@@ -34,6 +34,11 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
     '''Subject Eligibility Questionnaire'''
     age_in_years = models.IntegerField(
         verbose_name="Age in years.")
+    
+    guardian = models.CharField(
+        verbose_name='Does subject have a guardian available?, If minor',
+        max_length=3,
+        choices=YES_NO,)
 
     gender = models.CharField(
         max_length=1,

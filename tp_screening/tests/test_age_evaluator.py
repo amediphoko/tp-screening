@@ -11,6 +11,7 @@ class TestAgeEvaluator(TestCase):
 
     def test_ineligibilty_age_reasons_invalid(self):
         age_evaluator.eligible(17)
-        self.assertIn(age_evaluator.reasons_ineligible, 'under 18 years old')
+        self.assertIn('under 18 years old',
+                      age_evaluator.reasons_ineligible)
         age_evaluator.eligible(18)
         self.assertIsNone(age_evaluator.reasons_ineligible)

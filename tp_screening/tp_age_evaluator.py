@@ -10,14 +10,15 @@ class TpAgeEvaluator(AgeEvaluator):
         self.reasons_ineligible = None
         super().__init__(**kwargs)
 
-    def eligible(self, age=None):
+    def eligible(self, age=None, with_guardian=None):
         self.reasons_ineligible = None
         eligible = False
         if age:
             try:
                 self.in_bounds_or_raise(age=age)
             except ValueBoundryError:
-                self.reasons_ineligible = 'under 18 years old'
+                if not with_guardian:
+                    self.reasons_ineligible = 'under 18 years old, no guardian'
             else:
                 eligible = True
         return eligible

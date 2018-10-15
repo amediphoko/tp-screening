@@ -7,6 +7,7 @@ class ParticipantScreeningAdmin(admin.ModelAdmin):
 
     radio_fields = {
         'gender': admin.VERTICAL,
+        'guardian': admin.HORIZONTAL,
         'citizenship': admin.HORIZONTAL,
         'married_to_citizen': admin.HORIZONTAL,
         'marriage_proof': admin.HORIZONTAL,
@@ -25,6 +26,7 @@ class ParticipantScreeningAdmin(admin.ModelAdmin):
         ('Eligibility Criteria', {
             'fields': ('gender',
                        'age_in_years',
+                       'guardian',
                        'citizenship',
                        'married_to_citizen',
                        'marriage_proof',
