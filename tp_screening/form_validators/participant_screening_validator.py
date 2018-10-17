@@ -2,7 +2,7 @@ from edc_form_validators import FormValidator
 from edc_constants.constants import NO, YES
 
 
-class TpScreeningFormValidator(FormValidator):
+class ParticipantScreeningFormValidator(FormValidator):
 
     def clean(self):
         self.required_if(

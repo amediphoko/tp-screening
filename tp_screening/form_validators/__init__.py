@@ -1,1 +1,1 @@
-from .tp_screening_validator import TpScreeningFormValidator
+from .participant_screening_validator import ParticipantScreeningFormValidator

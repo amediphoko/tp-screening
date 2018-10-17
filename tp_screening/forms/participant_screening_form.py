@@ -1,12 +1,12 @@
 from django import forms
 from edc_form_validators import FormValidatorMixin
 from ..models import ParticipantScreening
-from ..form_validators import TpScreeningFormValidator
+from ..form_validators import ParticipantScreeningFormValidator
 
 
-class TpScreeningForm(FormValidatorMixin, forms.ModelForm):
+class ParticipantScreeningForm(FormValidatorMixin, forms.ModelForm):
 
-    form_validator_cls = TpScreeningFormValidator
+    form_validator_cls = ParticipantScreeningFormValidator
 
     class Meta:
         model = ParticipantScreening

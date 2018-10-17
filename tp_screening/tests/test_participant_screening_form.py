@@ -1,17 +1,17 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from edc_constants.constants import (NO, YES)
-from ..form_validators import TpScreeningFormValidator
+from ..form_validators import ParticipantScreeningFormValidator
 
 
-class TestTpScreeningForm(TestCase):
+class TestParticipantScreeningForm(TestCase):
 
     def test_botswana_citizen_no_married_required(self):
         cleaned_data = {
             'age_in_years': 18,
             'citizenship': NO,
             'married_to_citizen': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('married_to_citizen', form_validator._errors)
@@ -22,7 +22,7 @@ class TestTpScreeningForm(TestCase):
             'citizenship': NO,
             'married_to_citizen': YES,
             'marriage_proof': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()
@@ -35,7 +35,7 @@ class TestTpScreeningForm(TestCase):
             'citizenship': NO,
             'married_to_citizen': YES,
             'marriage_proof': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('marriage_proof', form_validator._errors)
@@ -46,7 +46,7 @@ class TestTpScreeningForm(TestCase):
             'citizenship': NO,
             'married_to_citizen': YES,
             'marriage_proof': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()
@@ -58,7 +58,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'citizenship': YES,
             'married_to_citizen': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('married_to_citizen', form_validator._errors)
@@ -68,7 +68,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'citizenship': YES,
             'married_to_citizen': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()
@@ -80,7 +80,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'literacy': NO,
             'has_witness_available': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('has_witness_available', form_validator._errors)
@@ -90,7 +90,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'literacy': NO,
             'has_witness_available': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()
@@ -102,7 +102,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'literacy': YES,
             'has_witness_available': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('has_witness_available', form_validator._errors)
@@ -112,7 +112,7 @@ class TestTpScreeningForm(TestCase):
             'age_in_years': 18,
             'literacy': YES,
             'has_witness_available': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()
@@ -123,7 +123,7 @@ class TestTpScreeningForm(TestCase):
         cleaned_data = {
             'age_in_years': 15,
             'guardian': None}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('guardian', form_validator._errors)
@@ -132,7 +132,27 @@ class TestTpScreeningForm(TestCase):
         cleaned_data = {
             'age_in_years': 15,
             'guardian': YES}
-        form_validator = TpScreeningFormValidator(
+        form_validator = ParticipantScreeningFormValidator(
+            cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except ValidationError as e:
+            self.fail(f'ValidationError unexpectedly raised. Got{e}')
+
+    def test_age_valid_guardian_invalid(self):
+        cleaned_data = {
+            'age_in_years': 18,
+            'guardian': YES}
+        form_validator = ParticipantScreeningFormValidator(
+            cleaned_data=cleaned_data)
+        self.assertRaises(ValidationError, form_validator.validate)
+        self.assertIn('guardian', form_validator._errors)
+
+    def test_age_valid_guardian_valid(self):
+        cleaned_data = {
+            'age_in_years': 18,
+            'guardian': None}
+        form_validator = ParticipantScreeningFormValidator(
             cleaned_data=cleaned_data)
         try:
             form_validator.validate()

@@ -5,7 +5,6 @@ from uuid import uuid4
 from ..identifiers import ScreeningIdentifier
 from ..tp_screening_eligibility import TpScreeningEligibility
 from edc_constants.choices import (GENDER, YES_NO, YES_NO_NA_DWTA)
-from edc_constants.constants import NO
 from edc_base.sites.site_model_mixin import SiteModelMixin
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 
@@ -39,8 +38,7 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
     guardian = models.CharField(
         verbose_name='Does subject have a guardian available?, If minor',
         max_length=3,
-        choices=YES_NO,
-        default=NO)
+        choices=YES_NO,)
 
     gender = models.CharField(
         max_length=1,
@@ -90,39 +88,54 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
         verbose_name="What is the subject's marital"
                      " status?",
         max_length=8,
-        choices=MARITAL_STATUS_CHOICES)
+        choices=MARITAL_STATUS_CHOICES,
+        null=True,
+        blank=True)
 
     living_arr = models.CharField(
         verbose_name="Who does the subject currently live with?",
         max_length=30,
-        choices=LIVING_ARRANGEMENTS)
+        choices=LIVING_ARRANGEMENTS,
+        null=True,
+        blank=True)
 
     number_of_spouses_f = models.IntegerField(
         verbose_name="How many wives does the subject's husband have"
-                     "(including traditional marriage), including the subject?"
+                     "(including traditional marriage), including the subject?",
+        null=True,
+        blank=True,
     )
 
     number_of_spouses_m = models.IntegerField(
         verbose_name="How many wives does the subject have, including"
-                     "traditional marriage?")
+                     "traditional marriage?",
+        null=True,
+        blank=True
+        )
 
     '''Education Questionnaire'''
 
     employment_status = models.CharField(
         verbose_name="Is the subject currently employed?",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        null=True,
+        blank=True)
 
     work_type = models.CharField(
         verbose_name="What type of work does the subject do?",
         max_length=30,
-        choices=WORK_TYPE_CHOICES)
+        choices=WORK_TYPE_CHOICES,
+        null=True,
+        blank=True)
 
     income_earnings = models.CharField(
         verbose_name="In the past month, how much money did the subject"
                      " earn from the work they did or received in payment?",
         max_length=10,
         choices=INCOME_SCALE,
+        null=True,
+        blank=True
     )
 
     '''Community Engagement Questionnaire'''
@@ -132,13 +145,17 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
                      " as Motshelo, Syndicate, PTA, VDC, Mophato & development"
                      " of the community that surrounds the subject?",
         max_length=20,
-        choices=ACTIVITY_LEVEL)
+        choices=ACTIVITY_LEVEL,
+        null=True,
+        blank=True)
 
     voted = models.CharField(
         verbose_name="Did the subject vote during the last local government"
                      " election?",
         max_length=15,
-        choices=YES_NO_NA_DWTA)
+        choices=YES_NO_NA_DWTA,
+        null=True,
+        blank=True)
 
     def __str__(self):
         return f'{self.screening_identifier} {self.gender} {self.age_in_years}'
