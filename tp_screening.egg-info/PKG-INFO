@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: tp-screening
+Version: 0.0.1
+Summary: subject's screening eligibility check.
+Home-page: https://github.com/amediphoko/tp-screening
+Author: Ame N Diphoko
+Author-email: adiphoko@bhp.org.bw
+License: UNKNOWN
+Description: [![Build Status](https://travis-ci.org/amediphoko/tp-screening.svg?branch=develop)](https://travis-ci.org/amediphoko/tp-screening)
+        [![Coverage Status](https://coveralls.io/repos/github/amediphoko/tp-screening/badge.svg?branch=develop)](https://coveralls.io/github/amediphoko/tp-screening?branch=develop)
+        
+        # tp-screening
+        Participant Screening models, views and admin_site
+        
+Keywords: django trainee program screening tp
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content

@@ -1,12 +1,41 @@
 from django.db import models
-from ..choices import (LIVING_ARRANGEMENTS, MARITAL_STATUS_CHOICES,
-                       WORK_TYPE_CHOICES, INCOME_SCALE, ACTIVITY_LEVEL)
 from uuid import uuid4
+import re
 from ..identifiers import ScreeningIdentifier
 from ..tp_screening_eligibility import TpScreeningEligibility
-from edc_constants.choices import (GENDER, YES_NO, YES_NO_NA_DWTA)
+from edc_constants.choices import GENDER, YES_NO
+from edc_constants.constants import UUID_PATTERN
+from edc_base.model_managers import HistoricalRecords
 from edc_base.sites.site_model_mixin import SiteModelMixin
+from edc_base.sites import CurrentSiteManager
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
+from edc_search.model_mixins import SearchSlugManager, SearchSlugModelMixin
+from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
+
+
+class SubjectScreeningManager(SearchSlugManager, models.Manager):
+
+    def get_by_natural_key(self, screening_identifier):
+        return self.get(screening_identifier=screening_identifier)
+
+
+class SubjectIdentifierModelMixin(NonUniqueSubjectIdentifierModelMixin,
+                                  SearchSlugModelMixin, models.Model):
+
+    def update_subject_identifier_on_save(self):
+        """Overridden to not set the subject identifier on save.
+        """
+        if not self.subject_identifier:
+            self.subject_identifier = self.subject_identifier_as_pk.hex
+        elif re.match(UUID_PATTERN, self.subject_identifier):
+            pass
+        return self.subject_identifier
+
+    def make_new_identifier(self):
+        return self.subject_identifier_as_pk.hex
+
+    class Meta:
+        abstract = True
 
 
 class ParticipantScreening(SiteModelMixin, BaseUuidModel):
@@ -33,12 +62,17 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
 
     '''Subject Eligibility Questionnaire'''
     age_in_years = models.IntegerField(
-        verbose_name="Age in years.")
+        verbose_name="Age in years.",
+        blank=True,
+        null=True)
 
     guardian = models.CharField(
         verbose_name='Does subject have a guardian available?, If minor',
         max_length=3,
-        choices=YES_NO,)
+        choices=YES_NO,
+        default=False,
+        blank=True,
+        null=True)
 
     gender = models.CharField(
         max_length=1,
@@ -47,30 +81,40 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
     citizenship = models.CharField(
         verbose_name="Is subject a citizen of botswana?",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        blank=True,
+        null=True)
 
     married_to_citizen = models.CharField(
         verbose_name="If not citizen, are they legally"
                      " married to a motswana?",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        blank=True,
+        null=True)
 
     marriage_proof = models.CharField(
         verbose_name="has subject provided proof of marriage?"
                      " Marriage certificate.",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        blank=True,
+        null=True)
 
     literacy = models.CharField(
         verbose_name="Is subject literate?",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        blank=True,
+        null=True)
 
     has_witness_available = models.CharField(
         verbose_name="Does the subject have a literate witness"
                      " available with them ?",
         max_length=3,
-        choices=YES_NO)
+        choices=YES_NO,
+        blank=True,
+        null=True)
 
     eligible = models.BooleanField(
         default=False,
@@ -82,80 +126,15 @@ class ParticipantScreening(SiteModelMixin, BaseUuidModel):
         null=True,
         editable=False)
 
-    '''Demographics Questionnaire'''
+    consented = models.BooleanField(
+        default=False,
+        editable=False)
 
-    marital_status = models.CharField(
-        verbose_name="What is the subject's marital"
-                     " status?",
-        max_length=8,
-        choices=MARITAL_STATUS_CHOICES,
-        null=True,
-        blank=True)
+    on_site = CurrentSiteManager()
 
-    living_arr = models.CharField(
-        verbose_name="Who does the subject currently live with?",
-        max_length=30,
-        choices=LIVING_ARRANGEMENTS,
-        null=True,
-        blank=True)
+    objects = SubjectScreeningManager()
 
-    number_of_spouses_f = models.IntegerField(
-        verbose_name="How many wives does the subject's husband have"
-                     "(including traditional marriage), including the subject?",
-        null=True,
-        blank=True,
-    )
-
-    number_of_spouses_m = models.IntegerField(
-        verbose_name="How many wives does the subject have, including"
-                     "traditional marriage?",
-        null=True,
-        blank=True
-        )
-
-    '''Education Questionnaire'''
-
-    employment_status = models.CharField(
-        verbose_name="Is the subject currently employed?",
-        max_length=3,
-        choices=YES_NO,
-        null=True,
-        blank=True)
-
-    work_type = models.CharField(
-        verbose_name="What type of work does the subject do?",
-        max_length=30,
-        choices=WORK_TYPE_CHOICES,
-        null=True,
-        blank=True)
-
-    income_earnings = models.CharField(
-        verbose_name="In the past month, how much money did the subject"
-                     " earn from the work they did or received in payment?",
-        max_length=10,
-        choices=INCOME_SCALE,
-        null=True,
-        blank=True
-    )
-
-    '''Community Engagement Questionnaire'''
-
-    community_activity = models.CharField(
-        verbose_name="How active is the subject in community activities such"
-                     " as Motshelo, Syndicate, PTA, VDC, Mophato & development"
-                     " of the community that surrounds the subject?",
-        max_length=20,
-        choices=ACTIVITY_LEVEL,
-        null=True,
-        blank=True)
-
-    voted = models.CharField(
-        verbose_name="Did the subject vote during the last local government"
-                     " election?",
-        max_length=15,
-        choices=YES_NO_NA_DWTA,
-        null=True,
-        blank=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.screening_identifier} {self.gender} {self.age_in_years}'

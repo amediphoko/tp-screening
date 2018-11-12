@@ -1,9 +1,3 @@
-'''
-Created on 24 Sep 2018
-
-@author: adiphoko
-'''
-
 NA = 'NOT ANSWERING'
 OT = 'OTHER'
 

@@ -1,9 +1,14 @@
 from django.contrib import admin
-from tp_screening.models import participant_screening
+from .modeladmin_mixins import ModelAdminMixin
+from ..admin_site import tp_screening_admin
+from ..forms import ParticipantScreeningForm
+from ..models import ParticipantScreening
 
 
-@admin.register(participant_screening.ParticipantScreening)
-class ParticipantScreeningAdmin(admin.ModelAdmin):
+@admin.register(ParticipantScreening, site=tp_screening_admin)
+class ParticipantScreeningAdmin(ModelAdminMixin, admin.ModelAdmin):
+
+    form = ParticipantScreeningForm
 
     radio_fields = {
         'gender': admin.VERTICAL,
