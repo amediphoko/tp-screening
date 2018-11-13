@@ -18,13 +18,6 @@ class ParticipantScreeningAdmin(ModelAdminMixin, admin.ModelAdmin):
         'marriage_proof': admin.HORIZONTAL,
         'literacy': admin.HORIZONTAL,
         'has_witness_available': admin.HORIZONTAL,
-        'marital_status': admin.HORIZONTAL,
-        'living_arr': admin.HORIZONTAL,
-        'employment_status': admin.HORIZONTAL,
-        'work_type': admin.HORIZONTAL,
-        'income_earnings': admin.HORIZONTAL,
-        'community_activity': admin.HORIZONTAL,
-        'voted': admin.HORIZONTAL
     }
 
     fieldsets = (
@@ -37,9 +30,5 @@ class ParticipantScreeningAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'marriage_proof',
                        'literacy',
                        'has_witness_available',)
-        }),
-        ('Demographics Questions', {
-            'fields': ('marital_status',
-                       'living_arr')
         }),
     )
